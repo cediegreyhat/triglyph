@@ -1,0 +1,164 @@
+<UserControl x:Class="TriGlyph.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="{DynamicResource AppFontFamily}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,6,0">
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Eyebrow}" Text="APPEARANCE" />
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Theme" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <ComboBox x:Name="ThemeBox" Grid.Column="1"
+                                  SelectionChanged="Theme_Changed" />
+                    </Grid>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Accent override" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <TextBox x:Name="AccentBox" Grid.Column="1" Text=""
+                                 TextChanged="Accent_Changed" />
+                    </Grid>
+                    <TextBlock Style="{StaticResource Muted}" Margin="150,6,0,0"
+                               Text="Hex like #22D3EE, or empty to use the theme accent." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Eyebrow}" Text="TELEMETRY" />
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Unit" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <ComboBox x:Name="UnitBox" Grid.Column="1"
+                                  SelectionChanged="Unit_Changed" />
+                    </Grid>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Refresh interval" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <Slider x:Name="RefreshSlider" Grid.Column="1" Minimum="0.25"
+                                Maximum="10" TickFrequency="0.25" IsSnapToTickEnabled="True"
+                                VerticalAlignment="Center" ValueChanged="Refresh_Changed" />
+                        <TextBlock x:Name="RefreshLabel" Grid.Column="2" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource Fg}" />
+                    </Grid>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Smoothing" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <ComboBox x:Name="SmoothingBox" Grid.Column="1"
+                                  SelectionChanged="Smoothing_Changed" />
+                    </Grid>
+
+                    <CheckBox x:Name="WriteOnChangeCheck" Margin="0,12,0,0"
+                              Content="Only write when the displayed value changes"
+                              Checked="WriteOnChange_Changed" Unchecked="WriteOnChange_Changed" />
+                    <TextBlock Style="{StaticResource Muted}" Margin="22,0,0,0"
+                               Text="Off by default: every tick is sent, matching the verified reference behaviour. Turn on to cut USB traffic." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Eyebrow}" Text="STARTUP" />
+                    <CheckBox x:Name="AutostartCheck" Margin="0,12,0,0"
+                              Content="Run at login (per-user, no admin)"
+                              Checked="Autostart_Changed" Unchecked="Autostart_Changed" />
+                    <CheckBox x:Name="StartMinimizedCheck"
+                              Content="Start minimised to tray"
+                              Checked="StartMinimized_Changed" Unchecked="StartMinimized_Changed" />
+                    <CheckBox x:Name="TrayCheck"
+                              Content="Closing the window hides it to tray"
+                              Checked="Tray_Changed" Unchecked="Tray_Changed" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Style="{StaticResource Eyebrow}" Text="DEVICE" />
+                        <Button Content="Rescan" HorizontalAlignment="Right"
+                                Style="{StaticResource GhostButton}" Padding="12,5"
+                                Click="Rescan_Click" />
+                    </Grid>
+                    <ListBox x:Name="CandidateList" Height="110" Margin="0,10,0,0"
+                             Background="Transparent" BorderThickness="0"
+                             Foreground="{DynamicResource FgMuted}" FontFamily="Consolas"
+                             FontSize="10" ItemsSource="{Binding Candidates}" />
+                    <TextBlock x:Name="PinnedText" Style="{StaticResource Muted}"
+                               Margin="0,8,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Pin selected" Style="{StaticResource GhostButton}"
+                                Click="Pin_Click" />
+                        <Button Content="Clear pin" Style="{StaticResource GhostButton}"
+                                Margin="8,0,0,0" Click="Unpin_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Eyebrow}" Text="TEMPERATURE SOURCE PRIORITY" />
+                    <TextBlock Style="{StaticResource Muted}" Margin="0,10,0,0"
+                               Text="Tried top to bottom; the first that produces a reading wins." />
+                    <ListBox x:Name="SourceList" Height="130" Margin="0,10,0,0"
+                             Background="Transparent" BorderThickness="0"
+                             Foreground="{DynamicResource Fg}" FontSize="12" />
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Move up" Style="{StaticResource GhostButton}" Click="Up_Click" />
+                        <Button Content="Move down" Style="{StaticResource GhostButton}"
+                                Margin="8,0,0,0" Click="Down_Click" />
+                    </StackPanel>
+
+                    <Grid Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Manual value (C)" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource FgMuted}" />
+                        <TextBox x:Name="ManualBox" Grid.Column="1" Text="" />
+                        <Button Grid.Column="2" Content="Set" Margin="8,0,0,0"
+                                Style="{StaticResource GhostButton}" Click="Manual_Click" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Button Content="Save settings" Style="{StaticResource PrimaryButton}" Click="Save_Click" />
+                <Button Content="Reload" Style="{StaticResource GhostButton}" Margin="8,0,0,0"
+                        Click="Reload_Click" />
+                <TextBlock x:Name="SettingsStatus" VerticalAlignment="Center" Margin="14,0,0,0"
+                           Foreground="{DynamicResource FgMuted}" FontSize="12" />
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

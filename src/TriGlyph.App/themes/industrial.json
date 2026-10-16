@@ -1,0 +1,16 @@
+{
+  "name": "industrial",
+  "isDark": true,
+  "background": "#0B0D0F",
+  "surface": "#14181B",
+  "surfaceAlt": "#1B2024",
+  "border": "#2A3136",
+  "text": "#D7DEE3",
+  "textMuted": "#78868F",
+  "accent": "#FF8A3D",
+  "accentAlt": "#4ADE80",
+  "good": "#34D399",
+  "warn": "#FBBF24",
+  "bad": "#F87171",
+  "fontFamily": "Consolas"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "editorial",
+  "isDark": false,
+  "background": "#FDFBF7",
+  "surface": "#FFFFFF",
+  "surfaceAlt": "#F4EFE6",
+  "border": "#E3DACA",
+  "text": "#241E17",
+  "textMuted": "#6F6455",
+  "accent": "#8C5A2B",
+  "accentAlt": "#3F6212",
+  "good": "#34D399",
+  "warn": "#FBBF24",
+  "bad": "#F87171",
+  "fontFamily": "Georgia"
+}

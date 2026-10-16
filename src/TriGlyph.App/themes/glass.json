@@ -1,0 +1,16 @@
+{
+  "name": "glass",
+  "isDark": true,
+  "background": "#050505",
+  "surface": "#101418",
+  "surfaceAlt": "#161B22",
+  "border": "#232A33",
+  "text": "#F2F5F8",
+  "textMuted": "#8B97A6",
+  "accent": "#22D3EE",
+  "accentAlt": "#34D399",
+  "good": "#34D399",
+  "warn": "#FBBF24",
+  "bad": "#F87171",
+  "fontFamily": "Segoe UI"
+}

@@ -1,0 +1,60 @@
+# github.event.* value is interpolated. Nothing here is injectable.
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Core tests (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+      - name: Test
+        run: dotnet test tests/TriGlyph.Tests/TriGlyph.Tests.csproj -c Release
+
+  windows:
+    name: Windows build and publish
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      # This job is the only automated check that the WPF project compiles against
+      # the real Windows desktop SDK, and that the apphost gets its GUI subsystem
+      # and version resource - which cannot be done when building on Linux.
+      - name: Build
+        run: dotnet build src/TriGlyph.App/TriGlyph.App.csproj -c Release
+
+      - name: Publish
+        run: >
+          dotnet publish src/TriGlyph.App/TriGlyph.App.csproj -c Release
+          -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o dist
+
+      - name: Verify subsystem is GUI, not console
+        shell: pwsh
+        run: |
+          $exe = "dist/TriGlyph.exe"
+          if (-not (Test-Path $exe)) { throw "publish produced no exe" }
+          $bytes = [IO.File]::ReadAllBytes($exe)
+          $pe = [BitConverter]::ToInt32($bytes, 0x3C)
+          $subsystem = [BitConverter]::ToUInt16($bytes, $pe + 24 + 68)
+          Write-Host "subsystem = $subsystem (2 = GUI)"
+          if ($subsystem -ne 2) { throw "expected GUI subsystem, got $subsystem" }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TriGlyph-win-x64
+          path: dist/
+          retention-days: 14

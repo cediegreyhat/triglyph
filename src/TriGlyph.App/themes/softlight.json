@@ -1,0 +1,16 @@
+{
+  "name": "softlight",
+  "isDark": false,
+  "background": "#F7F8FA",
+  "surface": "#FFFFFF",
+  "surfaceAlt": "#EEF1F5",
+  "border": "#DCE2EA",
+  "text": "#10151C",
+  "textMuted": "#5C6773",
+  "accent": "#2563EB",
+  "accentAlt": "#059669",
+  "good": "#34D399",
+  "warn": "#FBBF24",
+  "bad": "#F87171",
+  "fontFamily": "Segoe UI"
+}
