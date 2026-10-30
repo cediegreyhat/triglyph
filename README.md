@@ -6,10 +6,10 @@ DGT CPU cooler's three-digit USB temperature display.
 One self-contained `TriGlyph.exe`, ~146 MB. No installer, no admin rights, **no kernel
 driver**, no vendor DLLs, no HWiNFO.
 
-> **Status: `0.1.0-beta`** — feature-complete but **not yet verified on Windows or
-> against real hardware.** The wire protocol is transcribed from an independently
-> verified reference; the HID path has never been exercised on a physical panel.
-> See [Known limitations](#known-limitations).
+> **Status: `0.1.0-beta`** — feature-complete and **verified on Windows against a
+> real KF420/KF620 panel.** The wire protocol is transcribed from an independently
+> verified reference and the HID path has now been exercised end-to-end on physical
+> hardware. See [Known limitations](#known-limitations).
 
 ## Why this exists
 
@@ -110,8 +110,6 @@ Design rationale: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ## Known limitations
 
-- **Never executed on Windows or against real hardware.** This is the big one. Run the
-  Advanced page's descriptor reader first and report what it says.
 - **No version resource** in the published exe — MSBuild cannot add apphost resources
   off Windows (`NETSDK1074`). The window icon *is* embedded as a WPF resource, and
   the PE subsystem *is* patched to GUI, so no console window appears. The tray icon
