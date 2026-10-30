@@ -6,6 +6,7 @@
         Width="1020" Height="680" MinWidth="880" MinHeight="600"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        Icon="pack://application:,,,/icon.ico"
         Background="{DynamicResource Bg}"
         FontFamily="{DynamicResource AppFontFamily}"
         TextOptions.TextFormattingMode="Ideal"

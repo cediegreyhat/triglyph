@@ -28,4 +28,7 @@
   <ItemGroup>
     <None Include="themes\*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
 </Project>
