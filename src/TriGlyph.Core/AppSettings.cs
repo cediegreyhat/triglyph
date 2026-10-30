@@ -105,6 +105,18 @@ namespace TriGlyph.Core
                 {
                     SourcePriority = DefaultSourcePriority();
                 }
+                else
+                {
+                    // Merge in any source introduced in a newer build (e.g. AIDA64)
+                    // that the user's saved priority list predates, preserving order.
+                    foreach (string name in TemperatureSourceNames.All)
+                    {
+                        if (!SourcePriority.Contains(name, StringComparer.OrdinalIgnoreCase))
+                        {
+                            SourcePriority.Add(name);
+                        }
+                    }
+                }
             }
 
             PinnedDevicePath = PinnedDevicePath ?? "";

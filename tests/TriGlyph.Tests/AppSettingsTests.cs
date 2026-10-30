@@ -129,7 +129,11 @@ namespace TriGlyph.Tests
                 SourcePriority = new List<string> { "AcpiThermalZone", "Manual", "AcpiThermalZone" }
             };
             s.Normalize();
-            Assert.Equal(new[] { "AcpiThermalZone", "Manual" }, s.SourcePriority);
+            // Dedup preserves the user's order for the entries they named; any source
+            // they omitted is appended from the current default set so upgrades pick
+            // up newly added sources.
+            Assert.Equal("AcpiThermalZone", s.SourcePriority[0]);
+            Assert.Equal("Manual", s.SourcePriority[1]);
         }
 
         [Fact]
