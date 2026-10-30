@@ -20,10 +20,37 @@ namespace TriGlyph.App
         public string ThemesDirectory { get; private set; }
         public string AppDirectory { get; private set; }
 
+        public App()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                LogCrash("AppDomain.UnhandledException", e.ExceptionObject as Exception);
+            DispatcherUnhandledException += (s, e) =>
+            {
+                LogCrash("DispatcherUnhandledException", e.Exception);
+                e.Handled = true;
+            };
+        }
+
+        private static void LogCrash(string source, Exception ex)
+        {
+            try
+            {
+                string dir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "TriGlyph");
+                Directory.CreateDirectory(dir);
+                File.AppendAllText(Path.Combine(dir, "crash.log"),
+                    $"[{DateTime.Now:O}] {source}: {ex}\n");
+            }
+            catch { }
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
+            try
+            {
             AppDirectory = AppDomain.CurrentDomain.BaseDirectory;
             ThemesDirectory = Path.Combine(AppDirectory, "themes");
             SettingsPath = Path.Combine(
@@ -44,6 +71,11 @@ namespace TriGlyph.App
             if (!Settings.StartMinimized)
             {
                 _window.Show();
+            }
+            }
+            catch (Exception ex)
+            {
+                LogCrash("OnStartup", ex);
             }
         }
 
