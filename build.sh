@@ -7,6 +7,11 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export DOTNET_NOLOGO=1
 export DOTNET_CLI_HOME="${DOTNET_CLI_HOME:-$HOME/.dotnet}"
 
+# The .NET CLI's AnsiConsole crashes on Linux when TERM points at a missing/invalid
+# terminfo entry (e.g. TERM=dumb), aborting the whole build. Force a known-good
+# terminal type for this non-interactive build script.
+export TERM=xterm-256color
+
 echo "== tests =="
 dotnet test tests/TriGlyph.Tests/TriGlyph.Tests.csproj -c Release
 
