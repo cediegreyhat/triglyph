@@ -12,7 +12,7 @@ namespace TriGlyph.App.Views
     {
         private TelemetryHost _host;
         private App _app;
-        private bool _loading;
+        private bool _loading = true;
 
         public SettingsView()
         {
