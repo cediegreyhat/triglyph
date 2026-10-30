@@ -151,77 +151,77 @@ namespace TriGlyph.App.Sources
         }
 
         private bool TryReadWindowsProbe(out double celsius, out string error)
-    {
-        celsius = 0;
-        error = null;
-
-        double best = double.MinValue;
-
-        try
         {
-            using (var searcher = new ManagementObjectSearcher(
-                "root\\CIMV2",
-                "SELECT CurrentReading FROM Win32_TemperatureProbe"))
+            celsius = 0;
+            error = null;
+
+            double best = double.MinValue;
+
+            try
             {
-                foreach (ManagementBaseObject probe in searcher.Get())
+                using (var searcher = new ManagementObjectSearcher(
+                    "root\\CIMV2",
+                    "SELECT CurrentReading FROM Win32_TemperatureProbe"))
                 {
-                    using (probe)
+                    foreach (ManagementBaseObject probe in searcher.Get())
                     {
-                        object raw = probe["CurrentReading"];
-                        if (raw == null)
+                        using (probe)
                         {
-                            continue;
-                        }
+                            object raw = probe["CurrentReading"];
+                            if (raw == null)
+                            {
+                                continue;
+                            }
 
-                        double value;
-                        try
-                        {
-                            value = Convert.ToDouble(raw, CultureInfo.InvariantCulture);
-                        }
-                        catch (FormatException)
-                        {
-                            continue;
-                        }
-                        catch (InvalidCastException)
-                        {
-                            continue;
-                        }
+                            double value;
+                            try
+                            {
+                                value = Convert.ToDouble(raw, CultureInfo.InvariantCulture);
+                            }
+                            catch (FormatException)
+                            {
+                                continue;
+                            }
+                            catch (InvalidCastException)
+                            {
+                                continue;
+                            }
 
-                        // Win32_TemperatureProbe reports tenths of a degree on most
-                        // implementations; normalise anything implausibly large.
-                        if (value > 1000)
-                        {
-                            value /= 10.0;
-                        }
+                            // Win32_TemperatureProbe reports tenths of a degree on most
+                            // implementations; normalise anything implausibly large.
+                            if (value > 1000)
+                            {
+                                value /= 10.0;
+                            }
 
-                        if (value >= 0 && value <= 150 && value > best)
-                        {
-                            best = value;
+                            if (value >= 0 && value <= 150 && value > best)
+                            {
+                                best = value;
+                            }
                         }
                     }
                 }
             }
-        }
-        catch (ManagementException ex)
-        {
-            celsius = 0;
-            error = "WMI unavailable: " + ex.Message;
-            return false;
+            catch (ManagementException ex)
+            {
+                celsius = 0;
+                error = "WMI unavailable: " + ex.Message;
+                return false;
+            }
+
+            if (best == double.MinValue)
+            {
+                error = "Win32_TemperatureProbe returned nothing usable " +
+                        "(common; many boards do not populate it)";
+                return false;
+            }
+
+            celsius = best;
+            Caveat = "Win32_TemperatureProbe usually measures the board, not the CPU core";
+            return true;
         }
 
-        if (best == double.MinValue)
-        {
-            error = "Win32_TemperatureProbe returned nothing usable " +
-                    "(common; many boards do not populate it)";
-            return false;
-        }
-
-        celsius = best;
-        Caveat = "Win32_TemperatureProbe usually measures the board, not the CPU core";
-        return true;
-    }
-
-    private bool TryReadAcpi(out double celsius, out string error)
+        private bool TryReadAcpi(out double celsius, out string error)
         {
             celsius = 0;
             error = null;

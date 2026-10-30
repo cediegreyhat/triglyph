@@ -9,8 +9,10 @@ namespace TriGlyph.Tests
         {
             return new HidReportInfo
             {
-                ReportId = id, Kind = HidReportKind.Feature,
-                BitLength = bytes * 8, TransferByteLength = bytes + 1
+                ReportId = id,
+                Kind = HidReportKind.Feature,
+                BitLength = bytes * 8,
+                TransferByteLength = bytes + 1
             };
         }
 
@@ -18,8 +20,10 @@ namespace TriGlyph.Tests
         {
             return new HidReportInfo
             {
-                ReportId = id, Kind = HidReportKind.Input,
-                BitLength = bytes * 8, TransferByteLength = bytes + 1
+                ReportId = id,
+                Kind = HidReportKind.Input,
+                BitLength = bytes * 8,
+                TransferByteLength = bytes + 1
             };
         }
 

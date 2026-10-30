@@ -11,9 +11,15 @@ namespace TriGlyph.Tests
         {
             return new HidDeviceCandidate
             {
-                Path = path, VendorId = vid, ProductId = pid, InterfaceNumber = iface,
-                UsagePage = page, Usage = usage, FeatureReportLength = featLen,
-                Product = "USB Gaming Keyboard", Manufacturer = "SEMICO"
+                Path = path,
+                VendorId = vid,
+                ProductId = pid,
+                InterfaceNumber = iface,
+                UsagePage = page,
+                Usage = usage,
+                FeatureReportLength = featLen,
+                Product = "USB Gaming Keyboard",
+                Manufacturer = "SEMICO"
             };
         }
 

@@ -51,27 +51,27 @@ namespace TriGlyph.App
 
             try
             {
-            AppDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            ThemesDirectory = Path.Combine(AppDirectory, "themes");
-            SettingsPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "TriGlyph", "settings.json");
+                AppDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                ThemesDirectory = Path.Combine(AppDirectory, "themes");
+                SettingsPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "TriGlyph", "settings.json");
 
-            Settings = SettingsStore.Load(SettingsPath);
-            ApplyTheme(Settings.Theme);
+                Settings = SettingsStore.Load(SettingsPath);
+                ApplyTheme(Settings.Theme);
 
-            _host = new TelemetryHost(Settings);
-            _window = new MainWindow(this, _host);
+                _host = new TelemetryHost(Settings);
+                _window = new MainWindow(this, _host);
 
-            _tray = new TrayIcon(this, _window, _host);
-            _tray.Install();
+                _tray = new TrayIcon(this, _window, _host);
+                _tray.Install();
 
-            _host.Start();
+                _host.Start();
 
-            if (!Settings.StartMinimized)
-            {
-                _window.Show();
-            }
+                if (!Settings.StartMinimized)
+                {
+                    _window.Show();
+                }
             }
             catch (Exception ex)
             {
