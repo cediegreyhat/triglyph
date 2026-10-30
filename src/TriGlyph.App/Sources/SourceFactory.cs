@@ -14,7 +14,8 @@ namespace TriGlyph.App.Sources
         {
             var byName = new Dictionary<string, ITemperatureSource>(StringComparer.OrdinalIgnoreCase)
             {
-                [TemperatureSourceNames.LibreHardwareMonitor] = new LibreHardwareMonitorNativeSource(),
+                [TemperatureSourceNames.LibreHardwareMonitor] = new WmiTemperatureSource(
+                    TemperatureSourceNames.LibreHardwareMonitor, "root\\LibreHardwareMonitor", WmiFlavour.HardwareMonitor),
                 [TemperatureSourceNames.OpenHardwareMonitor] = new WmiTemperatureSource(
                     TemperatureSourceNames.OpenHardwareMonitor, "root\\OpenHardwareMonitor", WmiFlavour.HardwareMonitor),
                 [TemperatureSourceNames.HwInfoSharedMemory] = new HwInfoSharedMemorySource(),
