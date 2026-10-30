@@ -8,6 +8,7 @@
     <Nullable>disable</Nullable>
     <LangVersion>10</LangVersion>
     <AssemblyName>TriGlyph</AssemblyName>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <RootNamespace>TriGlyph.App</RootNamespace>
     <Version>0.1.0-beta</Version>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>

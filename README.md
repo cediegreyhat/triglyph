@@ -42,7 +42,7 @@ alongside it. That is the trade the vendor tool made differently, by bundling a 
 
 - **Pluggable temperature sources**, tried in priority order, with honest failure:
   LibreHardwareMonitor WMI → OpenHardwareMonitor WMI → HWiNFO shared memory → ACPI
-  thermal zone → manual value. Nothing is ever fabricated; unavailable is reported.
+  thermal zone → Windows temperature probe → manual value. Nothing is ever fabricated; unavailable is reported.
 - **Report descriptor decoder** — reads the panel's undocumented 205-byte descriptor
   over `IOCTL_HID_GET_REPORT_DESCRIPTOR` and parses it, so unknown report ids can be
   discovered rather than guessed.
@@ -112,9 +112,10 @@ Design rationale: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 - **Never executed on Windows or against real hardware.** This is the big one. Run the
   Advanced page's descriptor reader first and report what it says.
-- **No embedded icon or version resource** in the published exe — MSBuild cannot add
-  apphost resources off Windows (`NETSDK1074`). The PE subsystem *is* patched to GUI,
-  so no console window appears. The tray icon is drawn at runtime.
+- **No version resource** in the published exe — MSBuild cannot add apphost resources
+  off Windows (`NETSDK1074`). The window icon *is* embedded as a WPF resource, and
+  the PE subsystem *is* patched to GUI, so no console window appears. The tray icon
+  is drawn at runtime and coloured by temperature.
 - **Display blanking is not implemented.** No blank/off command is known.
 - **RGB and fan control are not reachable** — the ARGB fans connect to the
   motherboard's ARGB header and the fan to a PWM header, neither through this device.

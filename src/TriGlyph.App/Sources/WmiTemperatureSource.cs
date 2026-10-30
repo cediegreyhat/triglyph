@@ -13,7 +13,9 @@ namespace TriGlyph.App.Sources
         HardwareMonitor,
 
         /// <summary>root\WMI MSAcpi_ThermalZoneTemperature. Often absent on desktops.</summary>
-        AcpiThermalZone
+        AcpiThermalZone,
+        /// <summary>root\CIMV2 Win32_TemperatureProbe. Present on some boards/OEM systems.</summary>
+        WindowsTemperatureProbe
     }
 
     /// <summary>
@@ -47,7 +49,9 @@ namespace TriGlyph.App.Sources
             {
                 return _flavour == WmiFlavour.AcpiThermalZone
                     ? TryReadAcpi(out celsius, out error)
-                    : TryReadHardwareMonitor(out celsius, out error);
+                    : _flavour == WmiFlavour.WindowsTemperatureProbe
+                        ? TryReadWindowsProbe(out celsius, out error)
+                        : TryReadHardwareMonitor(out celsius, out error);
             }
             catch (ManagementException ex)
             {
@@ -146,7 +150,78 @@ namespace TriGlyph.App.Sources
             return true;
         }
 
-        private bool TryReadAcpi(out double celsius, out string error)
+        private bool TryReadWindowsProbe(out double celsius, out string error)
+    {
+        celsius = 0;
+        error = null;
+
+        double best = double.MinValue;
+
+        try
+        {
+            using (var searcher = new ManagementObjectSearcher(
+                "root\\CIMV2",
+                "SELECT CurrentReading FROM Win32_TemperatureProbe"))
+            {
+                foreach (ManagementBaseObject probe in searcher.Get())
+                {
+                    using (probe)
+                    {
+                        object raw = probe["CurrentReading"];
+                        if (raw == null)
+                        {
+                            continue;
+                        }
+
+                        double value;
+                        try
+                        {
+                            value = Convert.ToDouble(raw, CultureInfo.InvariantCulture);
+                        }
+                        catch (FormatException)
+                        {
+                            continue;
+                        }
+                        catch (InvalidCastException)
+                        {
+                            continue;
+                        }
+
+                        // Win32_TemperatureProbe reports tenths of a degree on most
+                        // implementations; normalise anything implausibly large.
+                        if (value > 1000)
+                        {
+                            value /= 10.0;
+                        }
+
+                        if (value >= 0 && value <= 150 && value > best)
+                        {
+                            best = value;
+                        }
+                    }
+                }
+            }
+        }
+        catch (ManagementException ex)
+        {
+            celsius = 0;
+            error = "WMI unavailable: " + ex.Message;
+            return false;
+        }
+
+        if (best == double.MinValue)
+        {
+            error = "Win32_TemperatureProbe returned nothing usable " +
+                    "(common; many boards do not populate it)";
+            return false;
+        }
+
+        celsius = best;
+        Caveat = "Win32_TemperatureProbe usually measures the board, not the CPU core";
+        return true;
+    }
+
+    private bool TryReadAcpi(out double celsius, out string error)
         {
             celsius = 0;
             error = null;

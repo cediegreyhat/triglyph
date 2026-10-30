@@ -14,6 +14,7 @@ namespace TriGlyph.Core
         public const string OpenHardwareMonitor = "OpenHardwareMonitor";
         public const string HwInfoSharedMemory = "HwInfoSharedMemory";
         public const string AcpiThermalZone = "AcpiThermalZone";
+        public const string WindowsTemperatureProbe = "WindowsTemperatureProbe";
         public const string Manual = "Manual";
 
         public static readonly IReadOnlyList<string> All = new[]
@@ -22,6 +23,7 @@ namespace TriGlyph.Core
             OpenHardwareMonitor,
             HwInfoSharedMemory,
             AcpiThermalZone,
+            WindowsTemperatureProbe,
             Manual
         };
     }

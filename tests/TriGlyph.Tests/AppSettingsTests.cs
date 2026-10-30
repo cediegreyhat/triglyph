@@ -19,7 +19,7 @@ namespace TriGlyph.Tests
             Assert.False(s.UnsafeWritesArmed);
             Assert.False(s.BlankOnIdle);
             Assert.True(s.MinimizeToTray);
-            Assert.Equal(5, s.SourcePriority.Count);
+            Assert.Equal(6, s.SourcePriority.Count);
             Assert.Equal(TemperatureSourceNames.LibreHardwareMonitor, s.SourcePriority[0]);
         }
 
@@ -118,7 +118,7 @@ namespace TriGlyph.Tests
         {
             var s = new AppSettings { SourcePriority = null };
             s.Normalize();
-            Assert.Equal(5, s.SourcePriority.Count);
+            Assert.Equal(6, s.SourcePriority.Count);
         }
 
         [Fact]

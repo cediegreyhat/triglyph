@@ -21,6 +21,8 @@ namespace TriGlyph.App.Sources
                 [TemperatureSourceNames.HwInfoSharedMemory] = new HwInfoSharedMemorySource(),
                 [TemperatureSourceNames.AcpiThermalZone] = new WmiTemperatureSource(
                     TemperatureSourceNames.AcpiThermalZone, "root\\WMI", WmiFlavour.AcpiThermalZone),
+                [TemperatureSourceNames.WindowsTemperatureProbe] = new WmiTemperatureSource(
+                    TemperatureSourceNames.WindowsTemperatureProbe, "root\\CIMV2", WmiFlavour.WindowsTemperatureProbe),
                 [TemperatureSourceNames.Manual] = manual
             };
 
