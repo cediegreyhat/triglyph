@@ -56,15 +56,15 @@ namespace TriGlyph.App.Views
             bool live = !state.IsStale && state.IsConnected;
 
             LiveText.Text = live ? "LIVE" : (state.IsConnected ? "STALE" : "NO PANEL");
-            LiveDot.Background = (Brush)FindResource(live ? "Good" : "Bad");
+            LiveDot.SetResourceReference(Border.BackgroundProperty, live ? "Good" : "Bad");
 
             if (int.TryParse(state.Display, out int celsius) && !state.IsStale)
             {
-                Readout.Foreground = (Brush)FindResource(celsius >= 85 ? "Bad" : celsius >= 70 ? "Warn" : "Fg");
+                Readout.SetResourceReference(TextBlock.ForegroundProperty, celsius >= 85 ? "Bad" : celsius >= 70 ? "Warn" : "Fg");
             }
             else
             {
-                Readout.Foreground = (Brush)FindResource("Fg");
+                Readout.SetResourceReference(TextBlock.ForegroundProperty, "Fg");
             }
         }
 
