@@ -15,6 +15,7 @@ namespace TriGlyph.Core
         public const string HwInfoSharedMemory = "HwInfoSharedMemory";
         public const string AcpiThermalZone = "AcpiThermalZone";
         public const string WindowsTemperatureProbe = "WindowsTemperatureProbe";
+        public const string Aida64SharedMemory = "AIDA64";
         public const string Manual = "Manual";
 
         public static readonly IReadOnlyList<string> All = new[]
@@ -24,6 +25,7 @@ namespace TriGlyph.Core
             HwInfoSharedMemory,
             AcpiThermalZone,
             WindowsTemperatureProbe,
+            Aida64SharedMemory,
             Manual
         };
     }

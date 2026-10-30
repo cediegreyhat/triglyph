@@ -19,6 +19,7 @@ namespace TriGlyph.App.Sources
                 [TemperatureSourceNames.OpenHardwareMonitor] = new WmiTemperatureSource(
                     TemperatureSourceNames.OpenHardwareMonitor, "root\\OpenHardwareMonitor", WmiFlavour.HardwareMonitor),
                 [TemperatureSourceNames.HwInfoSharedMemory] = new HwInfoSharedMemorySource(),
+                [TemperatureSourceNames.Aida64SharedMemory] = new Aida64SharedMemorySource(),
                 [TemperatureSourceNames.AcpiThermalZone] = new WmiTemperatureSource(
                     TemperatureSourceNames.AcpiThermalZone, "root\\WMI", WmiFlavour.AcpiThermalZone),
                 [TemperatureSourceNames.WindowsTemperatureProbe] = new WmiTemperatureSource(

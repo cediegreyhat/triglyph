@@ -52,7 +52,7 @@ tested on Linux with fakes. The App supplies a WMI-backed source and a
 | Layer | Contents |
 |-------|----------|
 | `Interop/` | `HidNative` (P/Invoke), `HidEnumerator` (SetupAPI walk), `HidFeatureChannel` (open/read/write/descriptor), `HidPanelWriter` (`IPanelWriter` adapter) |
-| `Sources/` | `WmiTemperatureSource`, `HwInfoSharedMemorySource`, `ManualTemperatureSource`, `SourceFactory` |
+| `Sources/` | `WmiTemperatureSource`, `HwInfoSharedMemorySource`, `Aida64SharedMemorySource`, `ManualTemperatureSource`, `SourceFactory` |
 | `Services/` | `TelemetryHost` (timer + device choice), `TrayIcon`, `AutostartService` |
 | `ViewModels/` | `AppState` - observable state the views bind to |
 | `Views/` | `DashboardView`, `AdvancedView`, `SettingsView` |
